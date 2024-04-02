@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>API 23-24 | Home</title>
+  <%- include('../partials/head'); %>
+</head>
+<body>
+  <header>
+    <nav></nav>
+  </header>
+
+  <main>
+    <h1>Het werkt!</h1>
+
+    <div id="movies-container">
+      <% if (movies && movies.length > 0) { %> <% movies.forEach(movie => { %>
+      <div class="movie">
+        <h2><%= movie.title %></h2>
+        <img
+          src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
+          alt="<%= movie.title %>"
+        />
+        <p><%= movie.overview %></p>
+      </div>
+      <% }); %> <% } else { %>
+      <p>No movies to display.</p>
+      <% } %>
+    </div>
+  </main>
+
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+
+</body>
+</html>
