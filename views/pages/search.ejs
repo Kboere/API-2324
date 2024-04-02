@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>API 23-24 | Search</title>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <header>
+    <nav></nav>
+  </header>
+
+  <main>
+    <h1><%= title %></h1>
+
+    <form action="/search" method="get">
+      <label for="search"></label>
+      <input id="search" type="text" name="search" value="<%= searchQuery %>" placeholder="Search for a movie" />
+      <button type="submit">Search</button>
+    </form>
+
+    <%- include('../components/movies'); %>
+  </main>
+
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+
+</body>
+
+</html>

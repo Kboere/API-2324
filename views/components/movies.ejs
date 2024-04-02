@@ -1,0 +1,14 @@
+<div id="movies-container">
+  <% if (movies && movies.length > 0) { %> <% movies.forEach(movie => { %>
+  <div class="movie">
+    <h2><%= movie.title %></h2>
+    <img
+      src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
+      alt="<%= movie.title %>"
+    />
+    <p><%= movie.overview %></p>
+  </div>
+  <% }); %> <% } else { %>
+  <p>Oops Something went wrong</p>
+  <% } %>
+</div>
