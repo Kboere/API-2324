@@ -39,6 +39,6 @@ Dit project is gemaakt door Kevin Boere
 
 ## 📜 License
 Copyright © 2024 Kevin Boere<br>
-Dit project heeft een [MIT](https://github.com/Kboere/Blok-Tech/blob/main/LICENSE) license
+Dit project heeft een [MIT](https://github.com/Kboere/API-2324/blob/main/LICENSE) license
 
 
