@@ -13,7 +13,9 @@
   --success-color: #28a745;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
-  --info-color: #17a2b8;
+  --info-color: #A6C4B1;
+
+  --max-width: 60vw;
 }
 
 /* =================================
@@ -26,4 +28,58 @@ body {
   font-style: normal;
   background-color: var(--primary-color);
   color: var(--secondary-color);
+}
+
+header{
+  position: fixed;
+  background-color: var(--primary-color);
+  width: 100%;
+  border-bottom: 1px solid var(--info-color);
+  top: 0;
+  z-index: 999999;
+  padding: 0 1rem;
+
+  & div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    width: var(--max-width);
+    margin: auto;
+
+    & img{
+      width: 100px;
+    }
+
+    & nav{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 30%;
+
+      & ul{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        & li{
+          list-style: none;
+          margin: 0 1rem;
+        }
+
+        & a{
+          text-decoration: none;
+          color: var(--secondary-color);
+        }
+      }
+    }
+  }
+}
+
+main{
+  position: relative;
+  width: var(--max-width);
+  margin: auto;
+  margin-top: 60px;
 }
