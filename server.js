@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import multer from "multer";
 import express from "express";
 import session from "express-session";
 import { MongoClient, ServerApiVersion } from "mongodb";
@@ -42,13 +43,16 @@ app.use(
 );
 app.set("view engine", "ejs");
 
-// Define fetch function
-async function fetchMovies(apiToken) {
-  const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiToken}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=2010-01-01`;
-  const response = await fetch(url);
-  const data = await response.json();
-  return data.results;
-}
+// Configure Multer for handling file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads"); // Destination folder for storing uploaded images
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 
 // Middleware function to check if user is authenticated
 const requireLogin = (req, res, next) => {
@@ -65,6 +69,14 @@ app.use((req, res, next) => {
   }
   requireLogin(req, res, next);
 });
+
+// Define fetch function
+async function fetchMovies(apiToken) {
+  const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiToken}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=2010-01-01`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.results;
+}
 
 // Define routes
 // login page route
@@ -109,6 +121,42 @@ app.post("/logout", (req, res) => {
       res.redirect("/login");
     }
   });
+});
+
+// Registration form submission route
+app.post('/register', upload.single('avatar'), async (req, res) => {
+  try {
+    // Get the username from the form
+    // const { username } = req.body;
+    
+    // Create an object with user data
+    const userData = {
+      avatar: `/uploads/${req.file.filename}`,
+      username: req.body.username,
+      password: req.body.password,
+      description: req.body.description,   
+    };
+
+    console.log("Received registration request with data:", userData);
+
+    // Check if the username is already taken
+    // const existingUser = await users.findOne({ username });
+    // if (existingUser) {
+    //   console.log('Username already exists:', username);
+    //   return res.render('pages/login', { error: 'Username already exists. Please choose another one.' });
+    // }
+
+    // Insert the new user into the database
+    await users.insertOne(userData);
+    // console.log('User registered:', newUser);
+
+    // Optionally, you can log the user in automatically after registration
+    // req.session.userId = newUser.insertedId; // Set the userId session variable
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error registering user:', err.stack);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // home page route
