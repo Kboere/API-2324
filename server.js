@@ -19,9 +19,15 @@ async function fetchMovies(apiToken) {
 }
 
 // Define routes
+// Home page route
 app.get("/", async function (req, res) {
   try {
     const movies = await fetchMovies(process.env.API_TOKEN);
+
+    // console.log the movies to see what the data looks like
+    console.log(movies);
+
+
     res.render('pages/index', { movies });
   } catch (error) {
     console.error('Fetching movies failed:', error);
@@ -29,7 +35,23 @@ app.get("/", async function (req, res) {
   }
 });
 
-// Search route
+// account page route
+app.get("/account", async function (req, res) {
+  try {
+    const movies = await fetchMovies(process.env.API_TOKEN);
+
+    // console.log the movies to see what the data looks like
+    console.log(movies);
+
+
+    res.render('pages/account', { movies });
+  } catch (error) {
+    console.error('Fetching movies failed:', error);
+    res.status(500).send('Failed to fetch movies');
+  }
+});
+
+// Search page route
 app.get('/search', async (req, res) => {
   let movies = [];
   let title = 'Search Movies';
@@ -45,6 +67,8 @@ app.get('/search', async (req, res) => {
       movies = data.results;
       title = `Search Results for "${search}"`;
       console.log(`Search query: ${search}`);
+
+      console.log(movies);
     } else {
       // If no search query, show default movies
       console.log('No search query, fetching default movies');
@@ -52,7 +76,7 @@ app.get('/search', async (req, res) => {
     }
 
     // Render the search page with either search results or default movies
-    res.render('pages/search', { movies, title, searchQuery: search });
+    res.render('pages/search', { movies, searchQuery: search });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Internal Server Error');

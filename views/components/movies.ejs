@@ -1,14 +1,48 @@
-<div id="movies-container">
-  <% if (movies && movies.length > 0) { %> <% movies.forEach(movie => { %>
-  <div class="movie">
-    <h2><%= movie.title %></h2>
-    <img
-      src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
-      alt="<%= movie.title %>"
-    />
-    <p><%= movie.overview %></p>
-  </div>
-  <% }); %> <% } else { %>
-  <p>Oops Something went wrong</p>
-  <% } %>
-</div>
+<ul id="movies-container">
+  <% if (movies && movies.length> 0) { %> <% movies.forEach(movie=> { %>
+      <li class="movie">
+        <div class="contain-movie">
+          <div class="movie-poster">
+            <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" />
+          </div>
+
+          <div class="movie-info">
+            <div class="movie-info-head">
+              <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" />
+              <h2>
+                <%= movie.title %>
+              </h2>
+              <span> &#x1F4C5; <%= movie.release_date %> </span>
+            </div>
+
+            <div class="movie-info-desc">
+              <h3>
+                <%= movie.title %> &centerdot;
+              </h3>
+              <p>
+                <%= movie.overview %>
+              </p>
+
+              <ul class="movie-facts">
+                <li><i class='bx bxs-like' ></i> <%= movie.vote_average %> of <span><%= movie.vote_count %> votes</span> </li>
+                <li><i class='bx bxs-hot' ></i> <%= movie.popularity %></li>
+              </ul>
+            </div>
+
+            <div class="movie-share">
+              <button><i data-type="bookmark" class='bx bxs-bookmark-star' ></i></button>
+              <button><i data-type="share" class='bx bxs-share' ></i></button>
+            </div>
+
+            <div class="movie-comment">
+              <input type="text" placeholder="Add a comment...">
+              <button>Send</button>
+            </div>
+          </div>
+        </div>
+      </li>
+      <% }); %>
+        <% } else { %>
+          <p>Oops Something went wrong</p>
+          <% } %>
+</ul>

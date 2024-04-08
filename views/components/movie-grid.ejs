@@ -1,0 +1,10 @@
+<ul id="grid-movie">
+  <% if (movies && movies.length> 0) { %> <% movies.forEach(movie=> { %>
+      <li class="movie">
+            <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" />
+      </li>
+      <% }); %>
+        <% } else { %>
+          <p>Oops Something went wrong</p>
+          <% } %>
+</ul>

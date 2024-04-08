@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>API 23-24 | Account</title>
+  <%- include('../partials/head'); %>
+</head>
+
+<body class="account">
+  <%- include('../partials/header'); %>
+
+    <main>
+    <div class="tabset">
+        <!-- Tab 1 -->
+        <input tabindex="-1" type="radio" name="tabset" id="tab1" aria-controls="posts" checked>
+        <label tabindex="0" for="tab1">Posts</label>
+        <!-- Tab 2 -->
+        <input tabindex="-1" type="radio" name="tabset" id="tab2" aria-controls="saved">
+        <label tabindex="0" for="tab2">Saved</label>
+
+        <div class="tab-panels">
+          <section id="posts" class="tab-panel">
+            <h2>Hier komen posts</h2>
+            <p><strong>History:</strong> A historical specialty of the city of Bamberg, in the Franconian region of
+              Bavaria in Germany. Beechwood-smoked malt is used to make a Märzen-style amber lager. The smoke character
+              of the malt varies by maltster; some breweries produce their own smoked malt (rauchmalz).</p>
+          </section>
+          <section id="saved" class="tab-panel">
+            <h2>hier saved posts</h2>
+            <%- include('../components/movie-grid'); %>
+          </section>
+        </div>
+
+      </div>
+    </main>
+
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+
+    <%- include('../partials/scripts'); %>
+</body>
+
+</html>

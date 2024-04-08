@@ -6,11 +6,10 @@
   <%- include('../partials/head'); %>
 </head>
 
-<body>
+<body class="search">
   <%- include('../partials/header'); %>
 
   <main>
-    <h1><%= title %></h1>
 
     <form action="/search" method="get">
       <label for="search"></label>
@@ -18,7 +17,7 @@
       <button type="submit">Search</button>
     </form>
 
-    <%- include('../components/movies'); %>
+    <%- include('../components/movie-grid'); %>
   </main>
 
   <footer>
