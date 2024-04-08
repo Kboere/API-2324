@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>API 23-24 | Login</title>
+  <%- include('../partials/head'); %>
+</head>
+<body class="login">
+  <main>
+        <h2>Login</h2>
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+  </main>
+
+  <%- include('../partials/scripts'); %>
+</body>
+</html>
