@@ -255,7 +255,6 @@ app.get("/search", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
