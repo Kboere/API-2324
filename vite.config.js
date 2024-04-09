@@ -12,7 +12,7 @@ export default defineConfig({
     emptyOutDir: false,
     outDir: 'dist',
     rollupOptions: {
-      input: path.resolve(__dirname, 'public/js/index.js'),
+      input: path.resolve(__dirname, 'src/index.js'),
     },
   },
 });
