@@ -3,4 +3,7 @@ node_modules/
 examples/**/dist/*
 .editorconfig
 .DS_Store
+.eslintrc.json
+.editorconfig
+.vite.config.js
 
