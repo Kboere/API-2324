@@ -17,6 +17,9 @@
           <ul>
             <li>
               <h2><%= user.username %></h2>
+              <form id="logoutForm" action="/logout" method="post">
+                <button type="submit">Logout</button>
+              </form>
             </li>
             <li>
               <h3><%= user.name %></h3>
@@ -57,10 +60,6 @@
         </div>
 
       </div>
-
-      <form id="logoutForm" action="/logout" method="post">
-        <button type="submit">Logout</button>
-      </form>
     </main>
 
     <footer>
