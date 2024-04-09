@@ -331,10 +331,11 @@ body.search {
 ul#grid-movie {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem;
 
   & li {
     list-style-type: none;
-    width: calc(100% / 4);
+    width: calc(100% / 4 - 0.5rem);
     height: auto;
 
     & img {
@@ -346,10 +347,53 @@ ul#grid-movie {
 }
 
 body.account {
-  .tabset {
-    width: var(--max-width);
+  & .contact-info {
+    --img-width: clamp(10rem, -0.313rem + 3.5vw, 22.75rem);
+    max-width: calc(var(--max-width) - 20vw);
     margin: auto;
     margin-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+
+    & img {
+      width: var(--img-width);
+      height: var(--img-width);
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    & ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      width: calc(100% - var(--img-width) - 2em);
+
+      & li {
+        width: 100%;
+        list-style: none;
+        margin: 0 0.5rem;
+
+        & h2 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+        }
+
+        & h3 {
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+
+  & .tabset {
+    width: var(--max-width);
+    margin: auto;
+    margin-top: 50px;
 
     > input[type="radio"] {
       position: absolute;
@@ -364,6 +408,9 @@ body.account {
       border-bottom: 0;
       cursor: pointer;
       font-weight: 600;
+      font-size: 1.5rem;
+      width: calc(50% - 0.2rem);
+      text-align: center;
     }
 
     & .tab-panel {
@@ -444,6 +491,41 @@ body.login {
   }
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
 @keyframes grow {
   from {
     opacity: 0;
@@ -471,12 +553,10 @@ body.login {
 }
 
 @media screen and (max-width: 480px) {
-
-  body.login{
-    & main{
+  body.login {
+    & main {
       width: 90%;
       padding: 1rem;
     }
   }
-  
 }

@@ -10,13 +10,39 @@
   <%- include('../partials/header'); %>
 
     <main>
-    <div class="tabset">
+      <section class="contact-info">
+        <% if (user) { %> <!-- Change 'users' to 'user' -->
+          <!-- Display user information -->
+          <img src="<%= user.image %>" alt="Avatar picture of user <%= user.name %>">
+          <ul>
+            <li>
+              <h2><%= user.username %></h2>
+            </li>
+            <li>
+              <h3><%= user.name %></h3>
+            </li>
+            <li>
+              <p><%= user.job %></p>
+            </li>
+            <li>
+              <p><%= user.description %></p>
+            </li>
+            <li>
+              <p><%= user.based %></p>
+            </li>
+          </ul>
+        <% } else { %>
+          <p>No user found</p>
+        <% } %>
+      </section>
+
+      <div class="tabset">
         <!-- Tab 1 -->
         <input tabindex="-1" type="radio" name="tabset" id="tab1" aria-controls="posts" checked>
-        <label tabindex="0" for="tab1">Posts</label>
+        <label tabindex="0" for="tab1"><i class='bx bxs-grid-alt' ></i></label>
         <!-- Tab 2 -->
         <input tabindex="-1" type="radio" name="tabset" id="tab2" aria-controls="saved">
-        <label tabindex="0" for="tab2">Saved</label>
+        <label tabindex="0" for="tab2"><i class='bx bxs-bookmark-star' ></i></label>
 
         <div class="tab-panels">
           <section id="posts" class="tab-panel">
@@ -26,8 +52,7 @@
               of the malt varies by maltster; some breweries produce their own smoked malt (rauchmalz).</p>
           </section>
           <section id="saved" class="tab-panel">
-            <h2>hier saved posts</h2>
-            <%- include('../components/movie-grid'); %>
+            <%- include('../components/bookmarked'); %>
           </section>
         </div>
 

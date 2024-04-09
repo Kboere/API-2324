@@ -11,7 +11,7 @@
       <p class="error"><%= error %></p>
       <% } %>
       <form action="/login" method="post">
-        <input type="text" name="username" placeholder="Username" required />
+        <input type="text" name="username" placeholder="Username" required autocomplete="current-password"/>
         <input
           type="password"
           name="password"
@@ -21,20 +21,6 @@
         <button type="submit">Login</button>
       </form>
 
-      <!-- Registration Form -->
-      <h2>Register</h2>
-      <form action="/register" method="post" enctype="multipart/form-data">
-        <label for="regUsername">Username:</label>
-        <input type="text" id="regUsername" name="username" required><br>
-        <label for="regPassword">Password:</label>
-        <input type="password" id="regPassword" name="password" required><br>
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description"><br>
-        <label for="avatar">Avatar:</label>
-        <input type="file" id="avatar" name="avatar" accept="image/*"><br>
-        <button type="submit">Register</button>
-      </form>
-    
     </main>
 
     <%- include('../partials/scripts'); %>

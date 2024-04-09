@@ -1,0 +1,20 @@
+<ul id="grid-movie">
+  <% if (bookmarkedMovies && bookmarkedMovies.length > 0) { %>
+    <% bookmarkedMovies.forEach(booked => { %>
+      <li class="movie" data-movie-id="<%= booked.movieId %>">
+        <img src="https://image.tmdb.org/t/p/w500<%= booked.poster %>" alt="<%= booked.title %>" />
+      </li>
+    <% }); %>
+  <% } else { %>
+    <p>Oops Something went wrong</p>
+  <% } %>
+</ul>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modal-title"></h2>
+    <p id="modal-overview"></p>
+    <!-- Add other movie details here -->
+  </div>
+</div>

@@ -26,6 +26,7 @@ client
 
 const db = client.db(dbName);
 const users = db.collection("users");
+const posts = db.collection("posts");
 
 const app = express();
 
@@ -70,12 +71,25 @@ app.use((req, res, next) => {
   requireLogin(req, res, next);
 });
 
+app.use((req, res, next) => {
+  res.locals.userId = req.session.userId;
+  next();
+});
+
 // Define fetch function
 async function fetchMovies(apiToken) {
   const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiToken}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=2010-01-01`;
   const response = await fetch(url);
   const data = await response.json();
   return data.results;
+}
+
+// Define the function to fetch movie details from TMDb
+async function fetchMovieDetails(movieId, apiToken) {
+  const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiToken}&language=en-US`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
 }
 
 // Define routes
@@ -96,6 +110,7 @@ app.post("/login", (req, res) => {
       if (user) {
         // Successful login
         req.session.userId = user._id; // Set user session
+        req.session.username = user.username; // Set username session
         console.log("User logged in:", user);
         res.redirect("/");
       } else {
@@ -123,49 +138,13 @@ app.post("/logout", (req, res) => {
   });
 });
 
-// Registration form submission route
-app.post('/register', upload.single('avatar'), async (req, res) => {
-  try {
-    // Get the username from the form
-    // const { username } = req.body;
-    
-    // Create an object with user data
-    const userData = {
-      avatar: `/uploads/${req.file.filename}`,
-      username: req.body.username,
-      password: req.body.password,
-      description: req.body.description,   
-    };
-
-    console.log("Received registration request with data:", userData);
-
-    // Check if the username is already taken
-    // const existingUser = await users.findOne({ username });
-    // if (existingUser) {
-    //   console.log('Username already exists:', username);
-    //   return res.render('pages/login', { error: 'Username already exists. Please choose another one.' });
-    // }
-
-    // Insert the new user into the database
-    await users.insertOne(userData);
-    // console.log('User registered:', newUser);
-
-    // Optionally, you can log the user in automatically after registration
-    // req.session.userId = newUser.insertedId; // Set the userId session variable
-    res.redirect('/');
-  } catch (err) {
-    console.error('Error registering user:', err.stack);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
 // home page route
 app.get("/", async function (req, res) {
   try {
     const movies = await fetchMovies(process.env.API_TOKEN);
 
     // console.log the movies to see what the data looks like
-    console.log(movies);
+    // console.log(movies);
 
     res.render("pages/index", { movies });
   } catch (error) {
@@ -174,18 +153,72 @@ app.get("/", async function (req, res) {
   }
 });
 
+// Define a route to handle the form submission
+app.post("/save-post", async (req, res) => {
+  try {
+    const movies = await fetchMovies(process.env.API_TOKEN);
+    // Extract the data from the request body
+    const { movieId, userId, title, releaseDate, overview, voteAverage, voteCount, popularity, poster } = req.body;
+
+    // Create an object containing the post data
+    const postData = {
+      movieId: movieId,
+      userId: userId,
+      title: title,
+      releaseDate: releaseDate,
+      overview: overview,
+      voteAverage: voteAverage,
+      voteCount: voteCount,
+      popularity: popularity,
+      poster: poster,
+    };
+
+    // Insert the post data into the "posts" collection in MongoDB
+    await posts.insertOne(postData);
+
+    console.log("Post saved:", postData);
+
+    // Send a success response
+    res.render("pages/index", { movies, message: "Post saved successfully", userId: req.session.userId });
+  } catch (error) {
+    // Log the error
+    console.error("Error saving post:", error);
+    // Send an error response
+    res.status(500).send("Failed to save post");
+  }
+});
+
 // account page route
 app.get("/account", async function (req, res) {
   try {
-    const movies = await fetchMovies(process.env.API_TOKEN);
+    const userName = req.session.username;
+    console.log("Username from session:", userName);
 
-    // console.log the movies to see what the data looks like
-    console.log(movies);
+    const userLoggedIn = await users.findOne({ username: userName });
+    console.log("User logged in:", userLoggedIn);
 
-    res.render("pages/account", { movies });
+    const bookmarkedMovies = await posts.find({ userId: userLoggedIn._id.toString() }).toArray();
+
+    res.render("pages/account", { user: userLoggedIn, bookmarkedMovies });
   } catch (error) {
     console.error("Fetching movies failed:", error);
     res.status(500).send("Failed to fetch movies");
+  }
+});
+
+// Define your Express route to handle requests for movie details
+app.get("/details", async (req, res) => {
+  try {
+    const movieId = req.query.movieId;
+
+    // Call the fetchMovieDetails function to fetch movie details
+    const movieDetails = await fetchMovieDetails(movieId, process.env.API_TOKEN);
+
+    // Send the movie details back to the client
+    res.json(movieDetails);
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    res.status(500).json({ error: "Failed to fetch movie details" });
   }
 });
 
