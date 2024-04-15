@@ -92,11 +92,11 @@ async function fetchMovieDetails (movieId, apiToken) {
   return data;
 }
 
-app.get('/manifest.json', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  // Send the manifest.json file
-  res.sendFile(__dirname + '/manifest.json');
-});
+// app.get('/manifest.json', (req, res) => {
+//   res.set('Content-Type', 'application/json');
+//   // Send the manifest.json file
+//   res.sendFile(__dirname + '/manifest.json');
+// });
 
 
 // Define routes

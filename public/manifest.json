@@ -1,5 +1,5 @@
 {
-    "name": "CineGram",
+    "name": "CineGram v2",
     "short_name": "CineGram",
     "description": "A instagram clone for movies",
     "icons": [
@@ -14,7 +14,7 @@
         "type": "image/png"
       }
     ],
-    "start_url": "/login",
+    "start_url": "/",
     "scope": "/",
     "display": "standalone",
     "orientation": "portrait",
