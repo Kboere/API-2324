@@ -37,6 +37,8 @@ header {
   top: 0;
   z-index: 999999;
   padding: 0 1rem;
+  display: flex;
+  justify-content: center;
 
   & div {
     display: flex;
@@ -44,7 +46,6 @@ header {
     align-items: center;
     padding: 1rem 0;
     width: var(--max-width);
-    margin: auto;
 
     & img {
       width: 100px;
@@ -500,7 +501,7 @@ body.login {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -524,7 +525,6 @@ body.login {
   text-decoration: none;
   cursor: pointer;
 }
-
 
 @keyframes grow {
   from {
@@ -552,7 +552,86 @@ body.login {
   }
 }
 
+@media screen and (max-width: 1200px) {
+  ul#movies-container {
+    scroll-snap-type: none;
+    margin-top: 100px;
+    overflow: unset;
+
+    & li {
+      scroll-snap-align: unset;
+      scroll-snap-stop: unset;
+      margin-bottom: 50px;
+
+      & .contain-movie {
+        display: flex;
+        flex-wrap: wrap;
+
+        & .movie-poster {
+          width: 100%;
+          height: 50vh;
+          padding: 15px;
+          /* border: var(--secondary-color) 15px solid; */
+
+          & img {
+            display: block;
+            margin: auto;
+            width: auto;
+            height: 100%;
+            object-fit: cover;
+            border: var(--secondary-color) 15px solid;
+          }
+        }
+
+        & .movie-info {
+          & .movie-info-desc {
+            & p {
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 1;
+              overflow: hidden;
+            }
+
+            & .movie-facts {
+              display: flex;
+              justify-content: space-between;
+
+              & li {
+                margin: 0;
+              }
+            }
+          }
+
+          & .movie-comment {
+            width: 100%;
+            position: relative;
+            bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  :root {
+    --max-width: 90%;
+  }
+}
+
 @media screen and (max-width: 480px) {
+  header {
+    & div {
+      & nav {
+        & ul {
+          & li {
+            margin: 0 0.5rem;
+          }
+        }
+      }
+    }
+  }
+
   body.login {
     & main {
       width: 90%;
