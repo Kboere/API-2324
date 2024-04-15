@@ -70,7 +70,22 @@ async function fetchMovies (apiToken) {
   const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiToken}&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2010&sort_by=popularity.desc`;
   const response = await fetch(url);
   const data = await response.json();
+
+  // Loop through each movie and round the vote_average attribute to one decimal place
+  data.results.forEach(movie => {
+    movie.vote_average = Math.round(movie.vote_average * 10) / 10; // Round to one decimal place
+    // Format vote_count to display in thousands
+    movie.vote_count = formatVoteCount(movie.vote_count);
+  });
+
   return data.results;
+}
+
+function formatVoteCount(voteCount) {
+  if (voteCount >= 1000) {
+    return (voteCount / 1000).toFixed(0) + 'k';
+  }
+  return voteCount;
 }
 
 // Define the function to fetch movie details from TMDb
