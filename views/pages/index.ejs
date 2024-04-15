@@ -8,6 +8,16 @@
   <%- include('../partials/header'); %>
 
   <main>
+
+    <!-- // if there is a message in the session, display it -->
+    <% if (message && message === 'toegevoegd') { %>
+      <p class="message new">You have added a new bookmark!</p>
+    <% } else if (message && message === 'verwijderd') { %>
+      <p class="message remove">You have removed a bookmark</p>
+    <% } else if (message) { %>
+      <p class="message"></p>
+    <% } %>
+
     <%- include('../components/movies'); %>
   </main>
 

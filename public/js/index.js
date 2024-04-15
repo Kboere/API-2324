@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const modalOverview = document.getElementById('modal-overview');
   const closeModal = document.querySelector('.close');
 
-  movies.forEach(movie => {
+  movies.forEach((movie) => {
     movie.addEventListener('click', async function () {
       const movieId = this.getAttribute('data-movie-id');
 
@@ -37,4 +37,13 @@ document.addEventListener('DOMContentLoaded', function () {
       modal.style.display = 'none';
     }
   });
+
+  // Close the modal when the escape key is pressed
+  window.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      modal.style.display = 'none';
+    }
+  });
+
+  
 });

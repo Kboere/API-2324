@@ -38,7 +38,7 @@ app.use(
     secret: process.env.SESSION_SECRET || 'secret', 
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false},
+    cookie: { secure: false },
   })
 );
 
@@ -129,7 +129,7 @@ app.get('/', async function (req, res) {
     const userName = req.session.username;
     const userLoggedIn = await users.findOne({ username: userName });
 
-    res.render('pages/index', { movies, user: userLoggedIn });
+    res.render('pages/index', { movies, user: userLoggedIn, message: '' });
   } catch (error) {
     console.error('Fetching movies failed:', error);
     res.status(500).send('Failed to fetch movies');
@@ -139,34 +139,45 @@ app.get('/', async function (req, res) {
 // Define a route to handle the form submission
 app.post('/save-post', async (req, res) => {
   try {
+    const userName = req.session.username;
+    const userLoggedIn = await users.findOne({ username: userName });
+
     const movies = await fetchMovies(process.env.API_TOKEN);
-    const { movieId, userId, title, releaseDate, overview, voteAverage, voteCount, popularity, poster } = req.body;
+    const { movieId, title, releaseDate, overview, voteAverage, voteCount, popularity, poster } = req.body;
+    const userId = req.session.userId;
 
-    // Create an object containing the post data
-    const postData = {
-      movieId: movieId,
-      userId: userId,
-      title: title,
-      releaseDate: releaseDate,
-      overview: overview,
-      voteAverage: voteAverage,
-      voteCount: voteCount,
-      popularity: popularity,
-      poster: poster,
-    };
+    if (!userId) {
+      res.status(401).json({ error: 'User not authenticated' });
+      return;
+    }
 
-    // Insert the post data into the "posts" collection in MongoDB
-    await posts.insertOne(postData);
+    // Check if the post already exists for the current user
+    const existingPost = await posts.findOne({ movieId, userId });
 
-    console.log('Post saved:', postData);
+    if (existingPost) {
+      // If the post exists, delete it (unbookmark the movie)
+      await posts.deleteMany({ movieId, userId });
+      res.render('pages/index', { movies, message: 'verwijderd', userId: userId, user: userLoggedIn });
+    } else {
+      // If the post doesn't exist, save it (bookmark the movie)
+      const postData = {
+        movieId: movieId,
+        userId: userId,
+        title: title,
+        releaseDate: releaseDate,
+        overview: overview,
+        voteAverage: voteAverage,
+        voteCount: voteCount,
+        popularity: popularity,
+        poster: poster
+      };
 
-    // Send a success response
-    res.render('pages/index', { movies, message: 'Post saved successfully', userId: req.session.userId });
+      await posts.insertOne(postData);
+      res.render('pages/index', { movies, message: 'toegevoegd', userId: userId, user: userLoggedIn });
+    }
   } catch (error) {
-    // Log the error
-    console.error('Error saving post:', error);
-    // Send an error response
-    res.status(500).send('Failed to save post');
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to process request' });
   }
 });
 
@@ -225,7 +236,7 @@ app.get('/search', async (req, res) => {
       movies = await fetchMovies(apiToken);
     }
 
-    res.render('pages/search', { movies, searchQuery: search, user: userLoggedIn});
+    res.render('pages/search', { movies, searchQuery: search, user: userLoggedIn });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Internal Server Error');

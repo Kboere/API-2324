@@ -90,6 +90,48 @@ header {
 
 main {
   position: relative;
+
+  & .message {
+    z-index: 999999;
+    display: block;
+    position: absolute;
+    right: 1rem;
+    background-color: #fff;
+    color: #000;
+    padding: 1rem 2rem;
+    top: 1rem;
+    border-radius: 5px;
+    animation: slide-in 2s forwards, fade-out 1s 4s forwards;
+
+    &.new{
+      background-color: var(--success-color);
+      color: var(--primary-color);
+    }
+
+    &.remove{
+      background-color: var(--danger-color);
+      color: var(--primary-color);
+    }
+}
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
 }
 
 ul#movies-container {
@@ -349,6 +391,10 @@ ul#grid-movie {
     list-style-type: none;
     width: calc(100% / 4 - 0.5rem);
     height: auto;
+
+    &[data-movie-id=""] {
+      display: none;
+    }
 
     & img {
       width: 100%;
