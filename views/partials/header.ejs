@@ -10,7 +10,11 @@
               <i class='bx bxs-message-square-dots' ></i>
             </li>
             <li>
-              <a href="/account"><i class='bx bxs-user' ></i></a>
+              <% if (user) { %>
+              <a href="/account"><img src="<%= user.image %>" alt="Avatar picture of user <%= user.name %>"></a>
+              <% } else { %>
+                <p>No user found</p>
+              <% } %>
             </li>
         </ul>
     </nav>

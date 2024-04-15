@@ -66,6 +66,17 @@ header {
         & li {
           list-style: none;
           margin: 0 1rem;
+
+          & img{
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
         }
 
         & a {
@@ -101,13 +112,13 @@ ul#movies-container {
 
     animation-name: grow;
     animation-fill-mode: forwards;
-    animation-duration: 1s; /* Firefox requires this to apply the animation */
+    animation-duration: 1s;
     animation-timing-function: linear;
 
     & .contain-movie {
       position: relative;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 60%;
+      transform: translateY(-56%);
       background-color: var(--tertiary-color);
       width: var(--max-width);
       margin: auto;
@@ -666,6 +677,7 @@ body.login {
   header {
     & div {
       & nav {
+        width: 50%;
         & ul {
           & li {
             margin: 0 0.5rem;

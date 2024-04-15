@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-// import multer from 'multer';
 import express from 'express';
 import session from 'express-session';
 import { MongoClient, ServerApiVersion } from 'mongodb';
@@ -36,29 +35,19 @@ app.use(express.static('public'));
 // Configure sessions
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'secret', // Replace with a more secure secret in production
+    secret: process.env.SESSION_SECRET || 'secret', 
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Set to true if using HTTPS
+    cookie: { secure: false},
   })
 );
-app.set('view engine', 'ejs');
 
-// Configure Multer for handling file uploads
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'public/uploads'); // Destination folder for storing uploaded images
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.originalname);
-//   },
-// });
-// const upload = multer({ storage: storage });
+app.set('view engine', 'ejs');
 
 // Middleware function to check if user is authenticated
 const requireLogin = (req, res, next) => {
   if (req.session && req.session.userId) {
-    return next(); // User is authenticated, allow the request to proceed
+    return next();
   }
   res.redirect('/login');
 };
@@ -78,7 +67,7 @@ app.use((req, res, next) => {
 
 // Define fetch function
 async function fetchMovies (apiToken) {
-  const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiToken}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=2010-01-01`;
+  const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiToken}&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2010&sort_by=popularity.desc`;
   const response = await fetch(url);
   const data = await response.json();
   return data.results;
@@ -86,18 +75,11 @@ async function fetchMovies (apiToken) {
 
 // Define the function to fetch movie details from TMDb
 async function fetchMovieDetails (movieId, apiToken) {
-  const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiToken}&language=en-US`;
+  const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiToken}&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2010&sort_by=popularity.desc`;
   const response = await fetch(url);
   const data = await response.json();
   return data;
 }
-
-// app.get('/manifest.json', (req, res) => {
-//   res.set('Content-Type', 'application/json');
-//   // Send the manifest.json file
-//   res.sendFile(__dirname + '/manifest.json');
-// });
-
 
 // Define routes
 // login page route
@@ -109,19 +91,15 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  console.log('Login attempt:', { username, password }); // Log the form data
-
   users
     .findOne({ username, password })
     .then((user) => {
       if (user) {
-        // Successful login
         req.session.userId = user._id; // Set user session
         req.session.username = user.username; // Set username session
         console.log('User logged in:', user);
         res.redirect('/');
       } else {
-        // Failed login
         res.render('pages/login', { error: 'Invalid username or password' });
       }
     })
@@ -133,13 +111,11 @@ app.post('/login', (req, res) => {
 
 // Logout route
 app.post('/logout', (req, res) => {
-  // Clear the user's session (assuming you're using express-session)
   req.session.destroy((err) => {
     if (err) {
       console.error('Error destroying session:', err);
       res.status(500).send('Internal Server Error');
     } else {
-      // Redirect the user to the login page after logout
       res.redirect('/login');
     }
   });
@@ -150,10 +126,10 @@ app.get('/', async function (req, res) {
   try {
     const movies = await fetchMovies(process.env.API_TOKEN);
 
-    // console.log the movies to see what the data looks like
-    // console.log(movies);
+    const userName = req.session.username;
+    const userLoggedIn = await users.findOne({ username: userName });
 
-    res.render('pages/index', { movies });
+    res.render('pages/index', { movies, user: userLoggedIn });
   } catch (error) {
     console.error('Fetching movies failed:', error);
     res.status(500).send('Failed to fetch movies');
@@ -164,7 +140,6 @@ app.get('/', async function (req, res) {
 app.post('/save-post', async (req, res) => {
   try {
     const movies = await fetchMovies(process.env.API_TOKEN);
-    // Extract the data from the request body
     const { movieId, userId, title, releaseDate, overview, voteAverage, voteCount, popularity, poster } = req.body;
 
     // Create an object containing the post data
@@ -199,10 +174,7 @@ app.post('/save-post', async (req, res) => {
 app.get('/account', async function (req, res) {
   try {
     const userName = req.session.username;
-    console.log('Username from session:', userName);
-
     const userLoggedIn = await users.findOne({ username: userName });
-    console.log('User logged in:', userLoggedIn);
 
     const bookmarkedMovies = await posts.find({ userId: userLoggedIn._id.toString() }).toArray();
 
@@ -213,7 +185,7 @@ app.get('/account', async function (req, res) {
   }
 });
 
-// Define your Express route to handle requests for movie details
+// details popup
 app.get('/details', async (req, res) => {
   try {
     const movieId = req.query.movieId;
@@ -232,20 +204,18 @@ app.get('/details', async (req, res) => {
 // Search page route
 app.get('/search', async (req, res) => {
   let movies = [];
-  // let title = 'Search Movies';
   let { search } = req.query;
+
+  const userName = req.session.username;
+  const userLoggedIn = await users.findOne({ username: userName });
 
   try {
     const apiToken = process.env.API_TOKEN;
     if (search) {
-      // Corrected URL to use the search endpoint instead of the discover endpoint
-      const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiToken}&language=en-US&query=${encodeURIComponent(
-        search
-      )}&page=1&include_adult=false&sort_by=popularity.desc&primary_release_date.gte=2010-01-01`;
+      const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiToken}&query=${encodeURIComponent(search)}&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2010&sort_by=popularity.desc`;
       const response = await fetch(url);
       const data = await response.json();
       movies = data.results;
-      // title = `Search Results for "${search}"`;
       console.log(`Search query: ${search}`);
 
       console.log(movies);
@@ -255,8 +225,7 @@ app.get('/search', async (req, res) => {
       movies = await fetchMovies(apiToken);
     }
 
-    // Render the search page with either search results or default movies
-    res.render('pages/search', { movies, searchQuery: search });
+    res.render('pages/search', { movies, searchQuery: search, user: userLoggedIn});
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Internal Server Error');
