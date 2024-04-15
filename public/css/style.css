@@ -611,11 +611,54 @@ body.login {
       }
     }
   }
+
+  body.account {
+    & .contact-info {
+      max-width: var(--max-width);
+      align-items: unset;
+
+      /* & ul{
+        width: 100%;
+        margin-top: 30px;
+      } */
+    }
+  }
 }
 
 @media screen and (max-width: 600px) {
   :root {
     --max-width: 90%;
+  }
+
+  body.account {
+    & .contact-info {
+      & img {
+        display: block;
+        margin: auto;
+      }
+
+      & ul {
+        width: 100%;
+        margin-top: 30px;
+      }
+    }
+
+    & .tabset {
+      width: 100%;
+      margin: auto;
+      margin-top: 30px;
+
+      & .tab-panel{
+        padding: 0;
+      }
+    }
+  }
+
+  ul#grid-movie {
+    gap: 0;
+    & li {
+      width: calc(100% / 2);
+    }
   }
 }
 
