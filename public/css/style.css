@@ -585,6 +585,14 @@ body.login {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 
+  & .close {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    font-size: 1rem;
+    z-index: 9999;
+  }
+
   & .bookmarked-top {
     grid-area: 1 / 1 / 3 / 2;
     height: 75dvh;
@@ -793,7 +801,7 @@ body.login {
         width: auto;
         height: 100%;
         object-fit: cover;
-        border: var(--secondary-color) 15px solid;
+        border: var(--tertiary-color) 15px solid;
       }
     }
 

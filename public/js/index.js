@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const voteAverage = document.getElementById('vote-average');
   const voteCount = document.getElementById('vote-count');
   const popularity = document.getElementById('popularity-modal');
-  // const closeModal = document.querySelector('.close');
+  const closeModal = document.querySelector('.close');
 
   const dateEmoji = '\u{1F4C5}';
   const centerDot = '\u{00B7}';
@@ -55,6 +55,11 @@ document.addEventListener('DOMContentLoaded', function () {
   function formatVoteAverage (voteAverage) {
     return parseFloat(voteAverage).toFixed(1);
   }
+
+  // Close the modal when the close button is clicked
+  closeModal.addEventListener('click', function () {
+    modal.style.display = 'none';
+  });
 
   // Close the modal when the overlay outside the modal is clicked
   window.addEventListener('click', function (event) {
