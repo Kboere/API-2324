@@ -14,37 +14,3 @@
     });
   }
 </script>
-
-<script>
-  // JavaScript code to handle bookmarking
-  document.querySelectorAll(".bookmark-btn").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const movieId = button.getAttribute("data-movieid");
-
-      console.log("Movie ID:", movieId); // Check the movie ID
-
-      // Send an AJAX request to save or remove the bookmark
-      const response = await fetch("/save-post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ movieId: movieId }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Update the button based on the response
-        if (data.saved) {
-          button.classList.add("saved"); // Add a CSS class to visually indicate bookmarked state
-        } else {
-          button.classList.remove("saved"); // Remove the CSS class to visually indicate not bookmarked state
-        }
-      } else {
-        console.error("Failed to toggle bookmark:", data.error);
-        // Handle error
-      }
-    });
-  });
-</script>

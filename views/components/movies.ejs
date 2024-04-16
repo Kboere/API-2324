@@ -35,7 +35,7 @@
               </div>
 
               <div class="movie-share">
-                <form action="/save-post" method="post">
+                <form action="/" method="post">
                   <!-- Hidden input fields for this movie's data -->
                   <input type="hidden" name="movieId" value="<%= movie.id %>" />
                   <input type="hidden" name="userId" value="<%= userId %>" />
@@ -63,6 +63,6 @@
         </li>
         <% }); %>
           <% } else { %>
-            <p>Oops Something went wrong</p>
+            <p>Oops no movies to show here!</p>
             <% } %>
   </ul>

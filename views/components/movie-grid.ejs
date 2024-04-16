@@ -1,6 +1,6 @@
 <ul id="grid-movie">
   <% if (movies && movies.length> 0) { %> <% movies.forEach(movie=> { %>
-      <li class="movie">
+      <li class="movie" data-movie-id="<%= movie.id %>">
             <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" />
       </li>
       <% }); %>
@@ -8,3 +8,35 @@
           <p>Oops Something went wrong</p>
           <% } %>
 </ul>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <!-- <span class="close">&times;</span> -->
+    <div class="bookmarked-top">
+      <img id="modal-poster" src="" alt="">
+    </div>
+    <div class="bookmarked-content">
+
+      <div class="bookmarked-content-user">
+        <img id="modal-poster-mini" src="" alt="">
+        <h2 id="modal-user"></h2>
+        <span id="modal-date"></span>
+      </div>
+
+      <div class="bookmarked-content-info">
+        <h3 id="modal-title"></h3>
+        <p id="modal-overview"></p>
+
+        <ul class="movie-facts">
+          <li><i class='bx bxs-star' ></i>
+            <span id="vote-average"></span><span id="vote-count"></span>
+          </li>
+          <li><i class='bx bxs-hot'></i>
+            <span id="popularity-modal"></span>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>

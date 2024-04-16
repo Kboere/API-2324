@@ -1,20 +1,45 @@
 <ul id="grid-movie">
-  <% if (bookmarkedMovies && bookmarkedMovies.length > 0) { %>
-    <% bookmarkedMovies.forEach(booked => { %>
-      <li class="movie" data-movie-id="<%= booked.movieId %>">
-        <img src="https://image.tmdb.org/t/p/w500<%= booked.poster %>" alt="<%= booked.title %>" />
-      </li>
-    <% }); %>
-  <% } else { %>
-    <p>Whatt?? no bookmarked poster yet!!</p>
+  <% if (bookmarkedMovies && bookmarkedMovies.length > 0) { %> <%
+  bookmarkedMovies.forEach(booked => { %>
+  <li class="movie" data-movie-id="<%= booked.movieId %>">
+    <img
+      src="https://image.tmdb.org/t/p/w500<%= booked.poster %>"
+      alt="<%= booked.title %>"
+    />
+  </li>
+  <% }); %> <% } else { %>
+  <p>Whatt?? no bookmarked poster yet!!</p>
   <% } %>
 </ul>
 
 <div id="myModal" class="modal">
   <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2 id="modal-title"></h2>
-    <p id="modal-overview"></p>
-    <!-- Add other movie details here -->
+    <!-- <span class="close">&times;</span> -->
+    <div class="bookmarked-top">
+      <img id="modal-poster" src="" alt="">
+    </div>
+    <div class="bookmarked-content">
+
+      <div class="bookmarked-content-user">
+        <img id="modal-poster-mini" src="" alt="">
+        <h2 id="modal-user"></h2>
+        <span id="modal-date"></span>
+      </div>
+
+      <div class="bookmarked-content-info">
+        <h3 id="modal-title"></h3>
+        <p id="modal-overview"></p>
+
+        <ul class="movie-facts">
+          <li><i class='bx bxs-star' ></i>
+            <span id="vote-average"></span><span id="vote-count"></span>
+          </li>
+          <li><i class='bx bxs-hot'></i>
+            <span id="popularity-modal"></span>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
   </div>
 </div>

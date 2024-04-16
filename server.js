@@ -81,19 +81,19 @@ async function fetchMovies (apiToken) {
   return data.results;
 }
 
-function formatVoteCount(voteCount) {
-  if (voteCount >= 1000) {
-    return (voteCount / 1000).toFixed(0) + 'k';
-  }
-  return voteCount;
-}
-
 // Define the function to fetch movie details from TMDb
 async function fetchMovieDetails (movieId, apiToken) {
   const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiToken}&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2010&sort_by=popularity.desc`;
   const response = await fetch(url);
   const data = await response.json();
   return data;
+}
+
+function formatVoteCount (voteCount) {
+  if (voteCount >= 1000) {
+    return (voteCount / 1000).toFixed(0) + 'k';
+  }
+  return voteCount;
 }
 
 // Define routes
@@ -152,7 +152,7 @@ app.get('/', async function (req, res) {
 });
 
 // Define a route to handle the form submission
-app.post('/save-post', async (req, res) => {
+app.post('/', async (req, res) => {
   try {
     const userName = req.session.username;
     const userLoggedIn = await users.findOne({ username: userName });
