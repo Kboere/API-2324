@@ -56,11 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return parseFloat(voteAverage).toFixed(1);
   }
 
-  // Close the modal when the close button is clicked
-  // closeModal.addEventListener('click', function () {
-  //   modal.style.display = 'none';
-  // });
-
   // Close the modal when the overlay outside the modal is clicked
   window.addEventListener('click', function (event) {
     if (event.target == modal) {
