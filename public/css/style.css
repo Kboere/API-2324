@@ -287,6 +287,19 @@ ul#movies-container {
             border: none;
             cursor: pointer;
 
+
+            &.bookmark-btn {
+              & i {
+                color: var(--primary-color);
+              }
+            }
+
+            &.bookmark-btn.stored-color {
+              & i{
+                color: var(--success-color);
+              }
+            }
+
             &:hover,
             &:focus {
               & i {

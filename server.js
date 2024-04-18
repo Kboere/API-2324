@@ -1,7 +1,10 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
+import webpush from 'web-push';
+// const webpush = require('web-push') //
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 dotenv.config();
 
@@ -35,7 +38,7 @@ app.use(express.static('public'));
 // Configure sessions
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'secret', 
+    secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
@@ -97,6 +100,47 @@ function formatVoteCount (voteCount) {
 }
 
 // Define routes
+
+// const saveToDatabase = async (userId, subscription) => {
+//   await users.updateOne({ _id: ObjectId(userId) }, { $set: { subscription: subscription } });
+// }
+// // The new /save-subscription endpoint
+// app.post('/save-subscription', async (req, res) => {
+//   const subscription = req.body.subscription;
+//   const userId = req.body.userId; // or from the session: req.session.userId
+//   await saveToDatabase(userId, subscription);
+//   res.json({ message: 'success' });
+// });
+// const vapidKeys = {
+//   publicKey:'BGO5gXdDxvClhx_KN0og44gJdgeTJUtj3i6j6Cc0tPaSd4fx4JQo84hrB3NPaIBAbHjVKJh-kk1_vzTdf8gC7s0',
+//   privateKey:'hXe0w8S-NHH2-2f4FYtIxdgwKSjZ2xibqwwZ4L8bYR4',
+// }
+// //setting our previously generated VAPID keys
+// webpush.setVapidDetails(
+//   'mailto:myuserid@email.com',
+//   vapidKeys.publicKey,
+//   vapidKeys.privateKey
+// )
+// //function to send the notification to the subscribed device
+// const sendNotification = async (userId, dataToSend) => {
+//   const user = await users.findOne({ _id: ObjectId(userId) });
+//   if (!user || !user.subscription) {
+//     throw new Error('No subscription found');
+//   }
+//   webpush.sendNotification(user.subscription, dataToSend);
+// }
+// //route to test send notification
+// app.get('/send-notification', async (req, res) => {
+//   const message = 'Hello World';
+//   const userId = req.session.userId; // or from the request parameters or body
+//   try {
+//     await sendNotification(userId, message);
+//     res.json({ message: 'message sent' });
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// });
+
 // login page route
 app.get('/login', (req, res) => {
   // Pass null as error by default
@@ -140,6 +184,7 @@ app.post('/logout', (req, res) => {
 app.get('/', async function (req, res) {
   try {
     const movies = await fetchMovies(process.env.API_TOKEN);
+    const userId = req.session.userId;
 
     const userName = req.session.username;
     const userLoggedIn = await users.findOne({ username: userName });
@@ -184,7 +229,8 @@ app.post('/', async (req, res) => {
         voteAverage: voteAverage,
         voteCount: voteCount,
         popularity: popularity,
-        poster: poster
+        poster: poster,
+        bookmarked: true,
       };
 
       await posts.insertOne(postData);
