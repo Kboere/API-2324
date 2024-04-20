@@ -7,22 +7,27 @@ Ik heb ervoor gekozen om te focussen op een aantal features. in de tabel hierond
 | Features | 
 | ----------- | 
 | Inladen van Movie API | 
-| Toevoegen van eigen film (DB)  |
-| Loading skeleton |
-| Wat als internet het niet doet? |
-| Push notifications API |
-| Page transition API |
+| Database connecten |
+| "Liken" van film naar account (DB) |
+| Login systeem maken |
+| search pagina + details pop-up |
+| Account pagina met opgelsagen films |
+| PWA van website maken (service worker) |
 
 ## 🚀 Dit Project Gebruiken?
-Om de app te gebruiken moet je deze repository clonen. gebruik de volgende commando in jouw Terminal:
+<b>Stap 1:</b> Om de app te gebruiken moet je deze repository clonen. gebruik de volgende commando in jouw Terminal:
 ```
-git clone https://github.com/Kboere/.......
+git clone https://github.com/Kboere/api-2324.git
 ```
-De volgende stap is om een [MongoDB](https://www.mongodb.com) account aan te maken met een database.
+<b>Stap2:</b> De volgende stap is om een [MongoDB](https://www.mongodb.com) account aan te maken met een database.<br>
+- hierbij noem je de database 'api'
+- en heb je 2 collections nodig 'users' & 'posts' <br>
+
+<b>Stap 3:</b> Maak nu een account aan bij [TMDB](https://www.themoviedb.org/settings/api). Hier heb je een api-sleutel nodig die je kunt vinden via instellingen > API.
 
 Nadat je dit hebt gedaan is het noodzakelijk om alle **NPM Packeges** te downloaden. Deze kun je zien in de package.json file onder "dependencies". Gebruik hiervoor:
 ```
-$ npm install (naam van package)
+$ npm install i
 ```
 
 Je bent er bijna!
@@ -30,6 +35,7 @@ Je bent er bijna!
 Om jouw database te connecten aan het project maak je een .env file aan via de Terminal (`touch .env`). Hierin zet je vervolgens de volgende regel code:
 ```
 MONGODB_URI = 'Jouw mongodb connectie link'
+API_TOKEN=hierjeapitokenplaatsen
 ```
 
 ## GEFELICITEERD!🎉  je kunt de CineGram app gaan gebruiken!
