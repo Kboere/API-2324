@@ -80,6 +80,9 @@ async function fetchMovies(apiToken) {
     movie.vote_average = Math.round(movie.vote_average * 10) / 10; // Round to one decimal place
     // Format vote_count to display in thousands
     movie.vote_count = formatVoteCount(movie.vote_count);
+
+    // set the data as  day- month- year
+    movie.release_date = movie.release_date.split('-').reverse().join('-');
   });
 
   return data.results;

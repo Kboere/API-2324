@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const voteCount = document.getElementById('vote-count');
   const popularity = document.getElementById('popularity-modal');
   const closeModal = document.querySelector('.close');
+  const movieInfo = document.querySelector('.bookmarked-content');
 
   const dateEmoji = '\u{1F4C5}';
   const centerDot = '\u{00B7}';
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
   movies.forEach((movie) => {
     movie.addEventListener('click', async function () {
       const movieId = this.getAttribute('data-movie-id');
+      movieInfo.classList.add('bookmarked-content-active');
 
       try {
         // Send a request to the server to fetch movie details
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
         modalPosterMini.src = `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`;
         modalPosterMini.alt = movieDetails.title;
         modalUser.textContent = movieDetails.title;
-        modaldate.textContent = `${dateEmoji} ${movieDetails.release_date}`; // Unicode for calendar emoji
+        modaldate.textContent = `${dateEmoji} ${formatDate(movieDetails.release_date)}`; // Unicode for calendar emoji
         modalTitle.textContent = `${movieDetails.title} ${centerDot}`;
         modalOverview.textContent = movieDetails.overview;
         voteAverage.textContent = formatVoteAverage(movieDetails.vote_average);
@@ -50,6 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
       return (voteCount / 1000).toFixed(0) + 'k';
     }
     return voteCount;
+  }
+
+  function formatDate (date) {
+    // set the data as  day- month- year
+    return date.split('-').reverse().join('-');
   }
 
   function formatVoteAverage (voteAverage) {
