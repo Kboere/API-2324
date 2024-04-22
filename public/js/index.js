@@ -77,48 +77,48 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Function to handle button click
-function handleClick(button) {
-  // Get the value of the attribute for this button
-  const attributeValue = button.getAttribute('data-movieid');
+// function handleClick(button) {
+//   // Get the value of the attribute for this button
+//   const attributeValue = button.getAttribute('data-movieid');
 
-  // Check if attributeValue exists
-  if (attributeValue) {
-    // Check if the attribute is already stored
-    const stored = localStorage.getItem(attributeValue);
-    if (stored) {
-      // If already stored, remove it and change button color
-      localStorage.removeItem(attributeValue);
-      console.log('Attribute removed from local storage:', attributeValue);
-      button.classList.remove('stored-color');
-      button.classList.add('default-color');
-    } else {
-      // If not stored, store it and change button color
-      localStorage.setItem(attributeValue, 'true');
-      console.log('Attribute saved to local storage:', attributeValue);
-      button.classList.remove('default-color');
-      button.classList.add('stored-color');
-    }
-  } else {
-    console.error('Attribute not found');
-  }
-}
+//   // Check if attributeValue exists
+//   if (attributeValue) {
+//     // Check if the attribute is already stored
+//     const stored = localStorage.getItem(attributeValue);
+//     if (stored) {
+//       // If already stored, remove it and change button color
+//       localStorage.removeItem(attributeValue);
+//       console.log('Attribute removed from local storage:', attributeValue);
+//       button.classList.remove('stored-color');
+//       button.classList.add('default-color');
+//     } else {
+//       // If not stored, store it and change button color
+//       localStorage.setItem(attributeValue, 'true');
+//       console.log('Attribute saved to local storage:', attributeValue);
+//       button.classList.remove('default-color');
+//       button.classList.add('stored-color');
+//     }
+//   } else {
+//     console.error('Attribute not found');
+//   }
+// }
 
-// Get all buttons with the class 'myButton'
-const bookmarkedBtn = document.querySelectorAll('.bookmark-btn');
-console.log('bookmarkedBtn:', bookmarkedBtn);
+// // Get all buttons with the class 'myButton'
+// const bookmarkedBtn = document.querySelectorAll('.bookmark-btn');
+// console.log('bookmarkedBtn:', bookmarkedBtn);
 
-// Loop through each button and add click event listener
-bookmarkedBtn.forEach(button => {
-  button.addEventListener('click', () => handleClick(button));
+// // Loop through each button and add click event listener
+// bookmarkedBtn.forEach(button => {
+//   button.addEventListener('click', () => handleClick(button));
 
-  // Check if the attribute is stored in local storage for this button
-  const stored = localStorage.getItem(button.getAttribute('data-movieid'));
-  if (stored) {
-    // Change button color if attribute is stored
-    button.classList.remove('default-color');
-    button.classList.add('stored-color');
-  }
-});
+//   // Check if the attribute is stored in local storage for this button
+//   const stored = localStorage.getItem(button.getAttribute('data-movieid'));
+//   if (stored) {
+//     // Change button color if attribute is stored
+//     button.classList.remove('default-color');
+//     button.classList.add('stored-color');
+//   }
+// });
 
 
 // const check = () => {

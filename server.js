@@ -11,8 +11,8 @@ dotenv.config();
 // Connecting mongoDB
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
 const dbName = 'api';
@@ -31,6 +31,7 @@ const users = db.collection('users');
 const posts = db.collection('posts');
 
 const app = express();
+let userIdObject;
 
 // Set up middleware
 app.use(express.urlencoded({ extended: true }));
@@ -69,7 +70,7 @@ app.use((req, res, next) => {
 });
 
 // Define fetch function
-async function fetchMovies (apiToken) {
+async function fetchMovies(apiToken) {
   const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiToken}&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2010&sort_by=popularity.desc`;
   const response = await fetch(url);
   const data = await response.json();
@@ -85,14 +86,14 @@ async function fetchMovies (apiToken) {
 }
 
 // Define the function to fetch movie details from TMDb
-async function fetchMovieDetails (movieId, apiToken) {
+async function fetchMovieDetails(movieId, apiToken) {
   const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiToken}&include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2010&sort_by=popularity.desc`;
   const response = await fetch(url);
   const data = await response.json();
   return data;
 }
 
-function formatVoteCount (voteCount) {
+function formatVoteCount(voteCount) {
   if (voteCount >= 1000) {
     return (voteCount / 1000).toFixed(0) + 'k';
   }
@@ -157,6 +158,7 @@ app.post('/login', (req, res) => {
         req.session.userId = user._id; // Set user session
         req.session.username = user.username; // Set username session
         console.log('User logged in:', user);
+
         res.redirect('/');
       } else {
         res.render('pages/login', { error: 'Invalid username or password' });
@@ -185,9 +187,9 @@ app.get('/', async function (req, res) {
   try {
     const movies = await fetchMovies(process.env.API_TOKEN);
     const userId = req.session.userId;
+    userIdObject = new ObjectId(userId);
 
-    const userName = req.session.username;
-    const userLoggedIn = await users.findOne({ username: userName });
+    const userLoggedIn = await users.findOne({ _id: userIdObject });
 
     res.render('pages/index', { movies, user: userLoggedIn, message: '' });
   } catch (error) {
@@ -199,12 +201,13 @@ app.get('/', async function (req, res) {
 // Define a route to handle the form submission
 app.post('/', async (req, res) => {
   try {
-    const userName = req.session.username;
-    const userLoggedIn = await users.findOne({ username: userName });
-
     const movies = await fetchMovies(process.env.API_TOKEN);
     const { movieId, title, releaseDate, overview, voteAverage, voteCount, popularity, poster } = req.body;
     const userId = req.session.userId;
+
+    userIdObject = new ObjectId(userId);
+
+    const userLoggedIn = await users.findOne({ _id: userIdObject });
 
     if (!userId) {
       res.status(401).json({ error: 'User not authenticated' });
@@ -217,6 +220,17 @@ app.post('/', async (req, res) => {
     if (existingPost) {
       // If the post exists, delete it (unbookmark the movie)
       await posts.deleteMany({ movieId, userId });
+
+      // Now use userIdObject in your update query
+      if (userIdObject) {
+        await users.updateOne(
+          { _id: userIdObject },
+          { $pull: { bookmarkedMovies: parseInt(movieId) } }
+        );
+      } else {
+        console.error('userId is not a valid ObjectId:', userId);
+      }
+
       res.render('pages/index', { movies, message: 'verwijderd', userId: userId, user: userLoggedIn });
     } else {
       // If the post doesn't exist, save it (bookmark the movie)
@@ -234,6 +248,16 @@ app.post('/', async (req, res) => {
       };
 
       await posts.insertOne(postData);
+
+      // Update user document to include the bookmarked movie
+      await users.updateOne(
+        { _id: userIdObject },
+        {
+          $addToSet: { bookmarkedMovies: parseInt(movieId) }, // Add movieId to the bookmarkedMovies array
+        },
+        { upsert: true } // Creates the field if it doesn't exist
+      );
+
       res.render('pages/index', { movies, message: 'toegevoegd', userId: userId, user: userLoggedIn });
     }
   } catch (error) {
@@ -241,6 +265,7 @@ app.post('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to process request' });
   }
 });
+
 
 // account page route
 app.get('/account', async function (req, res) {
