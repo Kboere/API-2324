@@ -854,6 +854,7 @@ body.login {
     top: 50px;
     transform: translate(-50%, 0);
     margin-bottom: 100px;
+    width: 100%;
 
     & .bookmarked-top {
       width: 100%;
