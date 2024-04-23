@@ -13,10 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const closeModal = document.querySelector('.close');
   const movieInfo = document.querySelector('.bookmarked-content');
 
-  const sharePoster = document.querySelectorAll('.bookmarked-content-user h2');
-  const imgPoster = document.querySelectorAll('.bookmarked-top img');
-  // const sharing = document.querySelectorAll('.bookmarked-top .bxs-share');
-
   const dateEmoji = '\u{1F4C5}';
   const centerDot = '\u{00B7}';
 
@@ -88,40 +84,6 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.style.display = 'none';
       }
     });
-
-
-    if (navigator.share) {
-
-      // const sharing = document.querySelectorAll('.bxs-share');
-
-      sharing.forEach((share, index) => {
-        share.addEventListener('click', async () => {
-          try {
-            const title = sharePoster[index].textContent;
-            const url = imgPoster[index].src;
-
-            await navigator.share({
-              title: title,
-              text: 'Check out this movie!',
-              url: url,
-            });
-          } catch (error) {
-            console.error('Error sharing:', error);
-          }
-        });
-      });
-    } else {
-      // const sharing = document.querySelectorAll('.bxs-share');
-      // Fallback for browsers that don't support Web Share API
-
-      sharing.forEach((share, index) => {
-        share.addEventListener('click', async () => {
-          // Display a message to the user alert
-          alert('Web Share API is not supported in your browser');
-        });
-      });
-
-    }
 
   }
 
