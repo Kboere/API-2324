@@ -1,6 +1,6 @@
 <ul id="grid-movie">
   <% if (movies && movies.length> 0) { %> <% movies.forEach(movie=> { %>
-      <li class="movie" data-movie-id="<%= movie.id %>">
+      <li class="movie-grid" data-movie-id="<%= movie.id %>">
             <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>" />
       </li>
       <% }); %>
@@ -36,7 +36,7 @@
           </li>
         </ul>
       </div>
-      
+
     </div>
   </div>
 </div>

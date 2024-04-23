@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const movies = document.querySelectorAll('.movie');
+  const movies = document.querySelectorAll('.movie-grid');
   const modal = document.getElementById('myModal');
   const modalPoster = document.getElementById('modal-poster');
   const modalPosterMini = document.getElementById('modal-poster-mini');
@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
     movie.addEventListener('click', async function () {
       const movieId = this.getAttribute('data-movie-id');
       movieInfo.classList.add('bookmarked-content-active');
+
+      console.log('movie is clicked');
 
       try {
         // Send a request to the server to fetch movie details
@@ -47,19 +49,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  function formatVoteCount (voteCount) {
+  function formatVoteCount(voteCount) {
     if (voteCount >= 1000) {
       return (voteCount / 1000).toFixed(0) + 'k';
     }
     return voteCount;
   }
 
-  function formatDate (date) {
+  function formatDate(date) {
     // set the data as  day- month- year
     return date.split('-').reverse().join('-');
   }
 
-  function formatVoteAverage (voteAverage) {
+  function formatVoteAverage(voteAverage) {
     return parseFloat(voteAverage).toFixed(1);
   }
 
@@ -82,6 +84,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+const sharePoster = document.querySelectorAll('.movie-info-head h2');
+const imgPoster = document.querySelectorAll('.movie-poster img');
+
+// Check if Web Share API is supported
+if (navigator.share) {
+
+  const sharing = document.querySelectorAll('.bxs-share');
+
+  sharing.forEach((share, index) => {
+    share.addEventListener('click', async () => {
+      try {
+        const title = sharePoster[index].textContent;
+        const url = imgPoster[index].src;
+
+        await navigator.share({
+          title: title,
+          text: 'Check out this movie!',
+          url: url,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    });
+  });
+} else {
+  const sharing = document.querySelectorAll('.bxs-share');
+  // Fallback for browsers that don't support Web Share API
+
+  sharing.forEach((share, index) => {
+    share.addEventListener('click', async () => {
+      // Display a message to the user alert
+      alert('Web Share API is not supported in your browser');
+    });
+  });
+
+}
 
 
 

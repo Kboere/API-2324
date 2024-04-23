@@ -1,7 +1,7 @@
 <ul id="grid-movie">
   <% if (bookmarkedMovies && bookmarkedMovies.length > 0) { %> <%
   bookmarkedMovies.forEach(booked => { %>
-  <li class="movie" data-movie-id="<%= booked.movieId %>">
+  <li class="movie-grid" data-movie-id="<%= booked.movieId %>">
     <img
       src="https://image.tmdb.org/t/p/w500<%= booked.poster %>"
       alt="<%= booked.title %>"
@@ -39,7 +39,7 @@
           </li>
         </ul>
       </div>
-      
+
     </div>
   </div>
 </div>
