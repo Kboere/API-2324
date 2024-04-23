@@ -92,9 +92,6 @@ const sharing = document.querySelectorAll('.bxs-share');
 
 // Check if Web Share API is supported
 if (navigator.share) {
-
-  // const sharing = document.querySelectorAll('.bxs-share');
-
   sharing.forEach((share, index) => {
     share.addEventListener('click', async () => {
       try {
@@ -112,9 +109,6 @@ if (navigator.share) {
     });
   });
 } else {
-  // const sharing = document.querySelectorAll('.bxs-share');
-  // Fallback for browsers that don't support Web Share API
-
   sharing.forEach((share, index) => {
     share.addEventListener('click', async () => {
       // Display a message to the user alert
