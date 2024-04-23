@@ -91,7 +91,7 @@ const imgPoster = document.querySelectorAll('.movie-poster img');
 const sharing = document.querySelectorAll('.bxs-share');
 
 // Check if Web Share API is supported
-if (navigator.share) {
+if (navigator.share) {x
   sharing.forEach((share, index) => {
     share.addEventListener('click', async () => {
       try {
