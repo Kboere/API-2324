@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const dateEmoji = '\u{1F4C5}';
   const centerDot = '\u{00B7}';
 
-  if (movies) {
     movies.forEach((movie) => {
       movie.addEventListener('click', async function () {
         const movieId = this.getAttribute('data-movie-id');
@@ -84,8 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.style.display = 'none';
       }
     });
-
-  }
 
 });
 
