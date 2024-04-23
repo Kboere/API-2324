@@ -622,6 +622,16 @@ body.login {
     z-index: 9999;
     animation: growIn 0.5s forwards;
 
+    & button {
+      position: absolute;
+      background: transparent;
+      border: none;
+      font-size: 2rem;
+      color: #ffffff;
+      padding: 0.5rem;
+      cursor: pointer;
+  }
+
     & img {
       width: auto;
       height: 100%;
